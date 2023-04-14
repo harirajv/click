@@ -69,7 +69,6 @@ function App() {
           </tbody>
         </table>
         <GoogleMapsComponent
-          location={clickLocations.length !== 0 && clickLocations[clickLocations.length-1]}
           locations={clickLocations}
           styleClass={clickCount !== 0}
         />

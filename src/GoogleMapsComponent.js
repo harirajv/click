@@ -16,14 +16,17 @@ export default function MyComponent(props) {
             zoom={3}
         >
             <Marker position={lighthall} label="Lighthall Inc"/>
-            {props.locations && <Marker
-                position={{lat: props.location.lat, lng: props.location.lng}}
-                label="Latest Click"
-            />}
             {props.locations && props.locations.map(coord => 
                 <Marker
                     key={coord.key}
                     position={{lat: coord.lat, lng: coord.lng}}
+                />
+            )}
+            {props.locations && props.locations.length !== 0 && (
+                <Marker
+                    position={{lat: props.locations[props.locations.length-1].lat,
+                        lng: props.locations[props.locations.length-1].lng}}
+                    label="Latest Click"
                 />
             )}
         </GoogleMap>
