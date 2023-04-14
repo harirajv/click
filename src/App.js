@@ -51,7 +51,6 @@ function App() {
           Latest location: {coordsHTML(clickLocations[clickLocations.length-1])}
         </h3>
       )}
-      {clickLocations.length !== 0 && <h3></h3>}
       <div className='location-elements'>
         <table className='location-table'>
           <thead>
@@ -61,7 +60,7 @@ function App() {
           {clickLocations && clickLocations.map(location => {
             console.log(location)
             return (
-              <tr>
+              <tr key={location.key}>
                 <td key={location.key}>{location.lat}&deg;{location.lat>0 ? "N" : "S"}, {Math.abs(location.lng)}&deg;{location.lng>0 ? "E" : "W"}</td>
               </tr>
             )
