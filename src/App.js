@@ -58,7 +58,6 @@ function App() {
           </thead>
           <tbody>
           {clickLocations && clickLocations.map(location => {
-            console.log(location)
             return (
               <tr key={location.key}>
                 <td key={location.key}>{location.lat}&deg;{location.lat>0 ? "N" : "S"}, {Math.abs(location.lng)}&deg;{location.lng>0 ? "E" : "W"}</td>
