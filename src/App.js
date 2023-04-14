@@ -7,8 +7,6 @@ function App() {
     let ct = localStorage.getItem("count");
     return +ct || 0;
   });
-  let [latitude, setLatitude] = useState(0);
-  let [longitude, setLongitude] = useState(0);
   let [clickLocations, setClickLocations] = useState(() => {
     let locArr = localStorage.getItem("locations");
     return locArr ? JSON.parse(locArr) : []
@@ -24,8 +22,6 @@ function App() {
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setLatitude(position.coords.latitude)
-        setLongitude(position.coords.longitude)
         setClickLocations(arr => [...arr, {
           key: localStorage.getItem("count"),
           lat: position.coords.latitude,
@@ -37,21 +33,25 @@ function App() {
 
   const resetCounter = () => {
     setCickCount(0);
-    setLatitude(0);
-    setLongitude(0);
     setClickLocations([]);
   }
 
-  const loaded = () => clickCount !== 0 && latitude !== null && longitude !== null;
+  const coordsHTML = ({lat, lng}) =>
+                     `${lat}\u00B0${lat > 0 ? "N" : "S"}, ${Math.abs(lng)}\u00B0${lng>0 ? "E" : "W"}`
 
   return (
     <div className="App">
       <div className='button-container'>
         <button onClick={counter}>Click Me!</button>
-        {clickCount && <button onClick={resetCounter}>Reset</button>}
+        {clickCount !== 0 && <button onClick={resetCounter}>Reset</button>}
       </div>
-      {clickCount && (<h2># of Clicks: {clickCount}</h2>)}
-      {latitude !== 0 && longitude !== 0 && <h3>Latest click location: {latitude}, {longitude}</h3>}
+      {clickCount !== 0 && (<h2># of Clicks: {clickCount}</h2>)}
+      {clickLocations.length !== 0 && (
+        <h3>
+          Latest location: {coordsHTML(clickLocations[clickLocations.length-1])}
+        </h3>
+      )}
+      {clickLocations.length !== 0 && <h3></h3>}
       <div className='location-elements'>
         <table className='location-table'>
           <thead>
@@ -68,10 +68,10 @@ function App() {
           })}
           </tbody>
         </table>
-        <GoogleMapsComponent 
-          location={{lat: latitude, lng: longitude}}
+        <GoogleMapsComponent
+          location={clickLocations.length !== 0 && clickLocations[clickLocations.length-1]}
           locations={clickLocations}
-          styleClass={loaded}
+          styleClass={clickCount !== 0}
         />
       </div>
       

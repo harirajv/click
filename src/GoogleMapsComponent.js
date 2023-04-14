@@ -11,12 +11,15 @@ export default function MyComponent(props) {
 
     return isLoaded ? (
         <GoogleMap
-            mapContainerClassName={props.styleClass() ? "center-map-container" : "fixed-map-container"}
+            mapContainerClassName={props.styleClass ? "center-map-container" : "fixed-map-container"}
             center={center}
             zoom={3}
         >
             <Marker position={lighthall} label="Lighthall Inc"/>
-            <Marker position={{lat: props.location.lat, lng: props.location.lng}} label="Latest Click"/>
+            {props.locations && <Marker
+                position={{lat: props.location.lat, lng: props.location.lng}}
+                label="Latest Click"
+            />}
             {props.locations && props.locations.map(coord => 
                 <Marker
                     key={coord.key}
